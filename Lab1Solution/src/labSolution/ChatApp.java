@@ -10,20 +10,21 @@ public class ChatApp {
 
     private List<String> publicChatLog;
     private List<String> privateChatLog;
-    private List<String> friendsList;
-
+    private Map<String, List<String>> friendsList;
+    
     private String currentUser = "<Donut[AFK]>";
 
     public ChatApp() {
         publicChatLog = loadChatLog(PUBLIC_CHAT_LOG_FILE);
         privateChatLog = loadChatLog(PRIVATE_CHAT_LOG_FILE);
-        friendsList = loadFriendsList(FRIENDS_LIST_FILE);
+        friendsList = loadFriendsList(FRIENDS_LIST_FILE); 
     }
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
         Privatechat privateChat = null;
         Publicchat publicChatQL = null;
+
 
         while (true) {
             System.out.println("Select an option:");
@@ -42,6 +43,7 @@ public class ChatApp {
                 String qfNickname = choice.substring(4);
                 Friendslist friendListQF = new Friendslist(friendsList);
                 friendListQF.printInfoByNickname(qfNickname);
+
             } else if (choice.startsWith("-ql ")) {
                 String qlRecipient = choice.substring(4);
                 if (privateChat == null) {
@@ -49,11 +51,11 @@ public class ChatApp {
                 }
                 privateChat.showPrivateChatMessagesByRecipient(qlRecipient);
             } else if ("-af".equals(choice)) {
-                Friendslist friendList = new Friendslist(friendsList);
-                friendList.addFriend(scanner);
-                friendsList = friendList.getFriendsList();
-                ChatApp.saveFriendsList(FRIENDS_LIST_FILE, friendsList);
-            } else {
+            	Friendslist friendList = new Friendslist(friendsList);
+                friendsList = friendList.addFriend(scanner);
+                saveFriendsList(FRIENDS_LIST_FILE, friendsList);
+            }
+                else {
                 switch (choice) {
                     case "-pb":
                         if (publicChatQL == null) {
@@ -68,7 +70,7 @@ public class ChatApp {
                         privateChat.privateChat(scanner);
                         break;
                     case "-pf":
-                        Friendslist friendList = new Friendslist(friendsList);
+                        Friendslist friendList = new Friendslist(friendsList); // Use Map directly
                         friendList.viewFriendsListOrderedByNickname();
                         break;
                     case "-qpl":
@@ -116,27 +118,47 @@ public class ChatApp {
         }
     }
 
-    static List<String> loadFriendsList(String fileName) {
-        List<String> list = new ArrayList<>();
+    static Map<String, List<String>> loadFriendsList(String fileName) {
+        Map<String, List<String>> friendsMap = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
+            String key = null;
+            List<String> details = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
-                list.add(line);
+                if (line.startsWith("<")) {
+                    if (key != null && !details.isEmpty()) {
+                        friendsMap.put(key, details);
+                        details = new ArrayList<>();
+                    }
+                    key = line.replace("<", "").replace(">", "");
+                } else {
+                    details.add(line);
+                }
+            }
+            if (key != null && !details.isEmpty()) {
+                friendsMap.put(key, details);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return list;
+        return friendsMap;
     }
 
-    static void saveFriendsList(String fileName, List<String> list) {
+
+  
+    static void saveFriendsList(String fileName, Map<String, List<String>> friendsList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (String item : list) {
-                writer.write(item);
+            for (Map.Entry<String, List<String>> entry : friendsList.entrySet()) {
+                writer.write("<" + entry.getKey() + ">");
                 writer.newLine();
+                for (String detail : entry.getValue()) {
+                    writer.write(detail);
+                    writer.newLine();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

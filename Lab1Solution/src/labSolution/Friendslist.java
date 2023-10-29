@@ -3,59 +3,50 @@ package labSolution;
 import java.util.*;
 
 public class Friendslist {
-    List<String> friendsList;
+	 Map<String, List<String>> friendsList;
 
-    public Friendslist(List<String> friendsList) {
-        this.friendsList = friendsList;
-    }
-
+	    public Friendslist(Map<String, List<String>> friendsList) {
+	        this.friendsList = friendsList;
+	    }
+   
     public void viewFriendsListOrderedByNickname() {
-        List<String> nicknames = new ArrayList<>();
-        Map<String, String> friendInfo = new HashMap<>();
-
-        for (String friend : friendsList) {
-            if (friend.startsWith("<") && friend.endsWith(">")) {
-                String nickname = friend.substring(1, friend.length() - 1);
-                nicknames.add(nickname);
-                friendInfo.put(nickname, "");
-            } else if (friend.startsWith("[FULLNAME]")) {
-                String fullName = friend.substring(9);
-                friendInfo.put(nicknames.get(nicknames.size() - 1), fullName);
-            }
-        }
-
+   
+        List<String> nicknames = new ArrayList<>(friendsList.keySet());
         Collections.sort(nicknames);
+
         System.out.println("Friends List ordered by nicknames:");
         for (String nickname : nicknames) {
+            String fullName = "";
+
+        
+            List<String> details = friendsList.get(nickname);
+            for (String detail : details) {
+            	if (detail.startsWith("[FULLNAME]")) {
+                    fullName = detail.substring(9);
+                    break;
+                }            }
             System.out.println("Nickname: " + nickname);
-            System.out.println("Full Name: " + friendInfo.get(nickname));
+            System.out.println("Full Name: " + fullName);
         }
     }
 
     public void printInfoByNickname(String nickname) {
-        boolean found = false;
         System.out.println("Information for friend with nickname " + nickname + ":");
 
-        for (int i = 0; i < friendsList.size(); i++) {
-            String friend = friendsList.get(i);
-            if (friend.startsWith("<" + nickname + ">")) {
-                found = true;
-                System.out.println(friend);
-                for (int j = i + 1; j < i + 4; j++) {
-                    if (j < friendsList.size()) {
-                        System.out.println(friendsList.get(j));
-                    }
-                }
-                break;
-            }
-        }
+        List<String> friendDetails = friendsList.get(nickname);
 
-        if (!found) {
+        if (friendDetails != null) {
+            for (String detail : friendDetails) {
+                System.out.println(detail);
+            }
+        } else {
             System.out.println("Friend with nickname " + nickname + " not found.");
         }
     }
 
-    public List<String> addFriend(Scanner scanner) {
+
+
+    public Map<String, List<String>> addFriend(Scanner scanner) {
         System.out.println("Enter the nickname of the friend you want to add:");
         String recipient = scanner.nextLine();
         System.out.println("Enter the full name of your friend:");
@@ -63,16 +54,20 @@ public class Friendslist {
         System.out.println("Enter the last IP of your friend:");
         String lastIP = scanner.nextLine();
 
-        friendsList.add("<" + recipient + ">");
-        friendsList.add("[FULLNAME]" + fullName);
-        friendsList.add("[LASTIP]" + lastIP);
-        friendsList.add("[IMAGE]");
+        List<String> friendDetails = new ArrayList<>();
+        friendDetails.add("[FULLNAME]" + fullName);
+        friendDetails.add("[LASTIP]" + lastIP);
+        friendDetails.add("[IMAGE]");
+
+        friendsList.put( recipient , friendDetails);
 
         System.out.println(recipient + " has been added to your friends list.");
         return friendsList;
     }
 
-    public List<String> getFriendsList() {
+
+    public Map<String, List<String>> getFriendsList() {
         return friendsList;
     }
+
 }
