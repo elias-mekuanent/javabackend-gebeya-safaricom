@@ -1,7 +1,9 @@
 package labSolution;
 
-import java.io.*;
+//import java.io.*;
 import java.util.*;
+
+import ChatExceptions.PublicChatExceptions;
 
 public class Publicchat {
     List<String> publicChatLog;
@@ -16,25 +18,20 @@ public class Publicchat {
         System.out.println("Enter your message in the public chat:");
         String message = scanner.nextLine();
         publicChatLog.add("you "+ "> " + message);
-        saveChatLog(ChatApp.PUBLIC_CHAT_LOG_FILE, publicChatLog);
+        PCExceptios(ChatApp.PUBLIC_CHAT_LOG_FILE, publicChatLog);
         System.out.println("Message sent to the public chat.");
     }
+
+        private void PCExceptios(String privateChatLogFile, List<String> privateChatLog2) {
+    
+        PublicChatExceptions PCExceptions = new PublicChatExceptions();
+          PCExceptions.saveChatLog(privateChatLogFile, privateChatLog2);
+       }
 
     public void showPublicChatMessages() {
         System.out.println("Public Chat Messages:");
         for (String message : publicChatLog) {
             System.out.println(message);
-        }
-    }
-
-    private void saveChatLog(String fileName, List<String> chatLog) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (String message : chatLog) {
-                writer.write(message);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

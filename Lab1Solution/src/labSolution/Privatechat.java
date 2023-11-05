@@ -1,7 +1,9 @@
 package labSolution;
 
-import java.io.*;
+//import java.io.*;
 import java.util.*;
+
+import ChatExceptions.PrivateChatExceptions;
 
 public class Privatechat {
     List<String> privateChatLog;
@@ -34,8 +36,14 @@ public class Privatechat {
         String message = scanner.nextLine();
         String senderMessage = "<< you >> to <" + recipient + "> " + message; 
         privateChatLog.add(senderMessage);
-        saveChatLog(ChatApp.PRIVATE_CHAT_LOG_FILE, privateChatLog);
+        prExceptions(ChatApp.PRIVATE_CHAT_LOG_FILE, privateChatLog);
         System.out.println("Private message sent to " + recipient + ".");
+    }
+
+        private void prExceptions(String privateChatLogFile, List<String> privateChatLog2) {
+    
+     PrivateChatExceptions prExceptions = new PrivateChatExceptions();
+       prExceptions.saveChatLog(privateChatLogFile, privateChatLog2);
     }
 
     public void showPrivateChatMessagesByRecipient(String recipient) {
@@ -49,17 +57,6 @@ public class Privatechat {
         }
         if (!messagesFound) {
             System.out.println("No messages yet");
-        }
-    }
-
-    private void saveChatLog(String fileName, List<String> chatLog) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            for (String message : chatLog) {
-                writer.write(message);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

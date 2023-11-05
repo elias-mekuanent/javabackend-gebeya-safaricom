@@ -2,6 +2,7 @@ package labSolution;
 
 import java.util.*;
 import java.io.*;
+import ChatExceptions.SystemExceptionHandler;
 
 public class ChatApp {
     static final String PUBLIC_CHAT_LOG_FILE = "Eurakarte.log";
@@ -92,6 +93,7 @@ public class ChatApp {
     public static void main(String[] args) {
         ChatApp chatApp = new ChatApp();
         chatApp.run();
+        Thread.setDefaultUncaughtExceptionHandler(new SystemExceptionHandler());
     }
 
     static List<String> loadChatLog(String fileName) {
