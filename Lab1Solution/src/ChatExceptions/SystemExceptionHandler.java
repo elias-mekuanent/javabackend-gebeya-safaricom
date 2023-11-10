@@ -4,6 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/*
+ * System exceptions handler
+ * Kindie Nega
+ * back-end
+ */
 public class SystemExceptionHandler implements Thread.UncaughtExceptionHandler {
     private static final String LOG_FILE = "system.log";
 

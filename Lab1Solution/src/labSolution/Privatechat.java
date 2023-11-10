@@ -39,11 +39,16 @@ public class Privatechat {
         prExceptions(ChatApp.PRIVATE_CHAT_LOG_FILE, privateChatLog);
         System.out.println("Private message sent to " + recipient + ".");
     }
-
-        private void prExceptions(String privateChatLogFile, List<String> privateChatLog2) {
+     
+    /*
+ * using Private chat writing exceptions 
+ * Kindie Nega
+ * back-end
+ */
+    private void prExceptions(String privateChatLogFile, List<String> privateChatLog2) {
     
      PrivateChatExceptions prExceptions = new PrivateChatExceptions();
-       prExceptions.saveChatLog(privateChatLogFile, privateChatLog2);
+       prExceptions.PrivateExceptions(privateChatLogFile, privateChatLog2);
     }
 
     public void showPrivateChatMessagesByRecipient(String recipient) {
