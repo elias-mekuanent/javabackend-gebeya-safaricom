@@ -21,11 +21,15 @@ public class Publicchat {
         PCExceptios(ChatApp.PUBLIC_CHAT_LOG_FILE, publicChatLog);
         System.out.println("Message sent to the public chat.");
     }
-
-        private void PCExceptios(String privateChatLogFile, List<String> privateChatLog2) {
+    /*
+ * using public chat writing exceptions 
+ * Kindie Nega
+ * back-end
+ */
+    private void PCExceptios(String privateChatLogFile, List<String> privateChatLog2) {
     
         PublicChatExceptions PCExceptions = new PublicChatExceptions();
-          PCExceptions.saveChatLog(privateChatLogFile, privateChatLog2);
+          PCExceptions.PublicExceptions(privateChatLogFile, privateChatLog2);
        }
 
     public void showPublicChatMessages() {

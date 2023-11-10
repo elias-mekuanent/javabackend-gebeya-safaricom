@@ -47,6 +47,18 @@ public class Privatechat {
             System.out.println("Error while saving private chat log: " + e.getMessage());
         }
     }
+<<<<<<< HEAD
+     
+    /*
+ * using Private chat writing exceptions 
+ * Kindie Nega
+ * back-end
+ */
+    private void prExceptions(String privateChatLogFile, List<String> privateChatLog2) {
+    
+     PrivateChatExceptions prExceptions = new PrivateChatExceptions();
+       prExceptions.PrivateExceptions(privateChatLogFile, privateChatLog2);
+=======
 
     private void savePrivateChatLog(String privateChatLogFile, List<String> privateChatLog) throws PrivateChatException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(privateChatLogFile, true))) {
@@ -56,6 +68,7 @@ public class Privatechat {
         } catch (IOException e) {
             throw new PrivateChatException("Error while saving private chat log.", e);
         }
+>>>>>>> 2d2581c1722733f6864ae574c577d2d41fa03782
     }
 
     public void showPrivateChatMessagesByRecipient(String recipient) {
