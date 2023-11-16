@@ -1,16 +1,22 @@
+// Package declaration
 package labSolution;
 
+// Import statements
 import java.util.*;
 
+// Friendslist class definition
 public class Friendslist {
-	 Map<String, List<String>> friendsList;
+    // Instance variable for the friends list
+    Map<String, List<String>> friendsList;
 
-	    public Friendslist(Map<String, List<String>> friendsList) {
-	        this.friendsList = friendsList;
-	    }
-   
+    // Constructor to initialize the friends list
+    public Friendslist(Map<String, List<String>> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    // View the friends list ordered by nicknames
     public void viewFriendsListOrderedByNickname() {
-   
+        // Extract nicknames, sort them, and display details
         List<String> nicknames = new ArrayList<>(friendsList.keySet());
         Collections.sort(nicknames);
 
@@ -18,18 +24,19 @@ public class Friendslist {
         for (String nickname : nicknames) {
             String fullName = "";
 
-        
             List<String> details = friendsList.get(nickname);
             for (String detail : details) {
-            	if (detail.startsWith("[FULLNAME]")) {
+                if (detail.startsWith("[FULLNAME]")) {
                     fullName = detail.substring(9);
                     break;
-                }            }
+                }
+            }
             System.out.println("Nickname: " + nickname);
             System.out.println("Full Name: " + fullName);
         }
     }
 
+    // Print information for a friend by nickname
     public void printInfoByNickname(String nickname) {
         System.out.println("Information for friend with nickname " + nickname + ":");
 
@@ -44,8 +51,7 @@ public class Friendslist {
         }
     }
 
-
-
+    // Add a friend to the friends list
     public Map<String, List<String>> addFriend(Scanner scanner) {
         System.out.println("Enter the nickname of the friend you want to add:");
         String recipient = scanner.nextLine();
@@ -54,20 +60,22 @@ public class Friendslist {
         System.out.println("Enter the last IP of your friend:");
         String lastIP = scanner.nextLine();
 
+        // Create a new entry for the friend and add it to the friends list
         List<String> friendDetails = new ArrayList<>();
         friendDetails.add("[FULLNAME]" + fullName);
         friendDetails.add("[LASTIP]" + lastIP);
         friendDetails.add("[IMAGE]");
 
-        friendsList.put( recipient , friendDetails);
+        friendsList.put(recipient, friendDetails);
 
         System.out.println(recipient + " has been added to your friends list.");
         return friendsList;
     }
 
-
+    // Getter method for the friends list
     public Map<String, List<String>> getFriendsList() {
         return friendsList;
     }
-
 }
+/*commented by Elias Mekuanent
+ Java-Backend*/
