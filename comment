@@ -1,0 +1,26 @@
+@Elias please create proper repo for your chat application. The repo has other unnecessary projects.
+
+ @Elias and @Kindie 
+  Add Comments in your codes. in each classes add something like these :
+
+What is Javadoc?
+
+Javadoc is a tool which comes with JDK and it is used for generating Java code documentation in HTML format from Java source code, which requires documentation in a predefined format.
+
+Following is a simple example where the lines inside /*….*/ are Java multi-line comments. Similarly, the line which preceeds // is Java single-line comment.
+
+/**
+* The HelloWorld program implements an application that
+* simply displays "Hello World!" to the standard output.
+*
+* @author  Addisu Thomas
+* @version 1.0
+* @since   2023-01-01 
+*/
+public class HelloWorld {
+
+   public static void main(String[] args) {
+      // Prints Hello, World! on standard output.
+      System.out.println("Hello World!");
+   }
+}
