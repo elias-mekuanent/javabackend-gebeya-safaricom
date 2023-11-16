@@ -1,5 +1,7 @@
+// Package declaration
 package labSolution;
 
+// Import statements
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,21 +11,26 @@ import java.util.Scanner;
 
 import ChatExceptions.PrivateChatException;
 
+// Privatechat class definition
 public class Privatechat {
+    // Instance variables for private chat log, friends list, and current user
     List<String> privateChatLog;
     Map<String, List<String>> friendsList;
     String currentUser;
 
+    // Constructor to initialize private chat log, friends list, and current user
     public Privatechat(List<String> privateChatLog, Map<String, List<String>> friendsList, String currentUser) {
         this.privateChatLog = privateChatLog;
         this.friendsList = friendsList;
         this.currentUser = currentUser;
     }
 
+    // Method to handle private chat interactions
     public void privateChat(Scanner scanner) {
         System.out.println("Enter the recipient's nickname:");
         String recipient = scanner.nextLine();
 
+        // Check if recipient is in the friends list
         if (!friendsList.containsKey(recipient)) {
             System.out.println("Recipient not found in your friends list.");
             System.out.println("Do you want to add " + recipient + " as a friend? (yes/no)");
@@ -47,19 +54,8 @@ public class Privatechat {
             System.out.println("Error while saving private chat log: " + e.getMessage());
         }
     }
-<<<<<<< HEAD
-     
-    /*
- * using Private chat writing exceptions 
- * Kindie Nega
- * back-end
- */
-    private void prExceptions(String privateChatLogFile, List<String> privateChatLog2) {
-    
-     PrivateChatExceptions prExceptions = new PrivateChatExceptions();
-       prExceptions.PrivateExceptions(privateChatLogFile, privateChatLog2);
-=======
 
+    // Method to save private chat log to a file
     private void savePrivateChatLog(String privateChatLogFile, List<String> privateChatLog) throws PrivateChatException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(privateChatLogFile, true))) {
             for (String message : privateChatLog) {
@@ -68,9 +64,9 @@ public class Privatechat {
         } catch (IOException e) {
             throw new PrivateChatException("Error while saving private chat log.", e);
         }
->>>>>>> 2d2581c1722733f6864ae574c577d2d41fa03782
     }
 
+    // Method to display private chat messages for a specific recipient
     public void showPrivateChatMessagesByRecipient(String recipient) {
         System.out.println("Private Chat Messages for recipient " + recipient + ":");
         boolean messagesFound = false;
@@ -80,6 +76,7 @@ public class Privatechat {
                 messagesFound = true;
             }
         }
+        /*commented by Elias Mekuanent*/
         if (!messagesFound) {
             System.out.println("No messages yet");
         }
