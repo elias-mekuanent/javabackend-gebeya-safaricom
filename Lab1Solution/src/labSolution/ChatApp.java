@@ -1,33 +1,41 @@
+// Package declaration and import statements
 package labSolution;
-
 import java.util.*;
 import java.io.*;
 import ChatExceptions.SystemExceptionHandler;
 
+// ChatApp class definition
 public class ChatApp {
+    // File names for chat logs and friends list
     static final String PUBLIC_CHAT_LOG_FILE = "Eurakarte.log";
     static final String PRIVATE_CHAT_LOG_FILE = "Donut[AFK].log";
     static final String FRIENDS_LIST_FILE = "friends.list";
 
+    // Instance variables for chat logs and friends list
     private List<String> publicChatLog;
     private List<String> privateChatLog;
     private Map<String, List<String>> friendsList;
     
+    // Current user's nickname
     private String currentUser = "<Donut[AFK]>";
 
+    // Constructor initializes chat logs and friends list from files
     public ChatApp() {
         publicChatLog = loadChatLog(PUBLIC_CHAT_LOG_FILE);
         privateChatLog = loadChatLog(PRIVATE_CHAT_LOG_FILE);
         friendsList = loadFriendsList(FRIENDS_LIST_FILE); 
     }
 
+    // Main method to run the chat application
     public void run() {
+        // Scanner for user input
         Scanner scanner = new Scanner(System.in);
         Privatechat privateChat = null;
         Publicchat publicChatQL = null;
 
-
+        // Main loop for user interaction
         while (true) {
+            // Display menu options
             System.out.println("Select an option:");
             System.out.println("-pb: Send a public message");
             System.out.println("-pv: Send a private message");
@@ -38,64 +46,76 @@ public class ChatApp {
             System.out.println("-qpl: Display the public chat log");
             System.out.println("Enter 'exit' to exit");
 
+            // Read user input
             String choice = scanner.nextLine();
 
+            // Handle different user choices
             if (choice.startsWith("-qf ")) {
-                String qfNickname = choice.substring(4);
+                // View information related to a friend
                 Friendslist friendListQF = new Friendslist(friendsList);
-                friendListQF.printInfoByNickname(qfNickname);
-
+                friendListQF.printInfoByNickname(choice.substring(4));
             } else if (choice.startsWith("-ql ")) {
-                String qlRecipient = choice.substring(4);
+                // Display private chat log related to a friend
                 if (privateChat == null) {
                     privateChat = new Privatechat(privateChatLog, friendsList, currentUser);
                 }
-                privateChat.showPrivateChatMessagesByRecipient(qlRecipient);
+                privateChat.showPrivateChatMessagesByRecipient(choice.substring(4));
             } else if ("-af".equals(choice)) {
-            	Friendslist friendList = new Friendslist(friendsList);
+                // Add a new friend to the friends list
+                Friendslist friendList = new Friendslist(friendsList);
                 friendsList = friendList.addFriend(scanner);
                 saveFriendsList(FRIENDS_LIST_FILE, friendsList);
-            }
-                else {
+            } else {
+                // Handle other menu options
                 switch (choice) {
                     case "-pb":
+                        // Send a public message
                         if (publicChatQL == null) {
                             publicChatQL = new Publicchat(publicChatLog, currentUser);
                         }
                         publicChatQL.sendPublicMessage(scanner);
                         break;
                     case "-pv":
+                        // Send a private message
                         if (privateChat == null) {
                             privateChat = new Privatechat(privateChatLog, friendsList, currentUser);
                         }
                         privateChat.privateChat(scanner);
                         break;
                     case "-pf":
-                        Friendslist friendList = new Friendslist(friendsList); // Use Map directly
+                        // Print friend list ordered by nicknames
+                        Friendslist friendList = new Friendslist(friendsList);
                         friendList.viewFriendsListOrderedByNickname();
                         break;
                     case "-qpl":
+                        // Display public chat log
                         if (publicChatQL == null) {
                             publicChatQL = new Publicchat(publicChatLog, currentUser);
                         }
                         publicChatQL.showPublicChatMessages();
                         break;
                     case "exit":
+                        // Exit the chat application
                         System.out.println("Exiting the chat application.");
                         return;
                     default:
+                        // Invalid choice
                         System.out.println("Invalid choice. Please select a valid option.");
                 }
             }
         }
     }
 
+    // Main method to start the chat application
     public static void main(String[] args) {
+        // Create a ChatApp instance and run the application
         ChatApp chatApp = new ChatApp();
         chatApp.run();
+        // Set a custom exception handler
         Thread.setDefaultUncaughtExceptionHandler(new SystemExceptionHandler());
     }
 
+    // Load chat log from a file
     static List<String> loadChatLog(String fileName) {
         List<String> chatLog = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -109,6 +129,7 @@ public class ChatApp {
         return chatLog;
     }
 
+    // Save chat log to a file
     static void saveChatLog(String fileName, List<String> chatLog) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (String message : chatLog) {
@@ -120,6 +141,7 @@ public class ChatApp {
         }
     }
 
+    // Load friends list from a file
     static Map<String, List<String>> loadFriendsList(String fileName) {
         Map<String, List<String>> friendsMap = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -146,8 +168,7 @@ public class ChatApp {
         return friendsMap;
     }
 
-
-  
+    // Save friends list to a file
     static void saveFriendsList(String fileName, Map<String, List<String>> friendsList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Map.Entry<String, List<String>> entry : friendsList.entrySet()) {
@@ -162,5 +183,6 @@ public class ChatApp {
             e.printStackTrace();
         }
     }
-
 }
+/*Commented by Elias Mekuanent
+  Java-Backend*/
